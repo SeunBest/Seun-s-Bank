@@ -11,16 +11,16 @@ namespace Seun_s_Bank
         public decimal Amount { get; set; }
         public decimal Balance { get; set; }
         public string Note { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public string TimeStamp { get; set; }
 
-        public Transaction(Customer owner, int accountNumber, decimal amount, decimal balance, string note, DateTime timeStamp)
+        public Transaction(Customer owner, int accountNumber, decimal amount, decimal balance, string note)
         {
             Owner = owner;
             AccountNumber = accountNumber;
             Amount = amount;
             Balance = balance;
             Note = note;
-            TimeStamp = timeStamp;
+            TimeStamp = DateTime.Now.ToString("MM/dd/yyyy");
         }
     }
 }

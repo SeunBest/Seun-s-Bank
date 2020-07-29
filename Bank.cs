@@ -14,9 +14,9 @@ namespace Seun_s_Bank
         public List<Customer> allCustomers = new List<Customer>();
         public List<Account> allAccounts = new List<Account>();
 
-        //public Bank (string name , string email, string password)
-        //{
-        //    Seed = seed;
-        //}
+        public void AddCustomer(Customer customer)
+        {
+            allCustomers.Add(customer);
+        }
     }
 }
