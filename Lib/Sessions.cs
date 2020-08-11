@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
 using Seun_s_Bank.Data;
 using Seun_s_Bank.Help;
-using Seun_s_Bank.Lib;
 
 namespace Seun_s_Bank.Lib
 {

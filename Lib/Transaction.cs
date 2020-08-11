@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Seun_s_Bank.Help;
-using Seun_s_Bank.Lib;
 using Seun_s_Bank.Data;
 
 namespace Seun_s_Bank
 {
     public class Transaction
     {
+        //properties
+        #region properties
         public string Id { get; set; }
         public string AccountNumber { get; set; }
         public decimal Amount { get; set; }
         public string Note { get; set; }
         public string acc { get; set; }
         public DateTime date { get; set; }
+        #endregion
 
+        #region Transaction Constructor
         public Transaction(string accountNumber, decimal amount, string note, string acc, DateTime date)
         {
             Id = createId();
@@ -25,6 +25,7 @@ namespace Seun_s_Bank
             this.acc = acc ?? throw new ArgumentNullException(nameof(acc));
             this.date = date;
         }
+        #endregion
 
         private string createId()
         {

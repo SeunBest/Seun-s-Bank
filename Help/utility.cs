@@ -6,7 +6,7 @@ using Seun_s_Bank.Data;
 
 namespace Seun_s_Bank.Help
 {
-    class utility
+    public class utility
     {
         public void createSession(string Id, string Name, string Email, string accNum)
         {
@@ -15,7 +15,6 @@ namespace Seun_s_Bank.Help
             Log.Name = Name;
             Log.Email = Email;
             Log.AccNo = accNum;
-
         }
     }
 }

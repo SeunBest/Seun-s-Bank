@@ -1,14 +1,13 @@
-﻿using Seun_s_Bank.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Seun_s_Bank.Data;
 
 namespace Seun_s_Bank.Lib
 {
     public class Account : IDuty
     {
+        #region Properties
+        //base number for account number generstion
         int seed = 1234567890;
         public string number { get; private set; }
         public typeOfAcc AccType { get; set; }
@@ -46,7 +45,9 @@ namespace Seun_s_Bank.Lib
             }
             set { }
         }
+        #endregion
 
+        #region account constructor
         public Account() { }
         public Account(string ownerID, typeOfAcc accType, decimal startUp)
         {
@@ -56,10 +57,11 @@ namespace Seun_s_Bank.Lib
             this.AccType = accType;
             Transactions = new List<Transaction>();
             date = DateTime.Now;
-            Deposit(number, startUp, "Opening Balance", accType);
         }
+        #endregion
 
-        public void Deposit(string accNo, decimal amount, string note, typeOfAcc acc)
+        #region Deposit Method
+        public void Deposit(decimal amount, string note)
         {
             //handle invalid amount
            if (amount < 1)
@@ -67,38 +69,42 @@ namespace Seun_s_Bank.Lib
                 throw new ArgumentOutOfRangeException(nameof(amount), "Deposit amount must be above zero");
             }
             //make the deposit
-            var cash = new Transaction(accNo, amount, note, acc.ToString(), DateTime.Now);
+            var cash = new Transaction(this.number, amount, note, this.AccType.ToString(), DateTime.Now);
             //add transaction to transactions
             Bank.allTransactions.Add(cash);
         }
+        #endregion
 
-        public void Withdraw(string accNo, decimal amount, string note, typeOfAcc acc)
+        #region Withdraw Method
+        public void Withdraw(decimal amount, string note)
         {
             //handle invalid amount
-            if (amount < 0)
+            if (amount < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(amount), "Withdrawal must be above zero");
             }
 
             //handle savings account
-            if (acc.ToString() == "Savings" && Balance - amount < 100)
+            if (this.AccType.ToString() == "Savings" && Balance - amount < 100)
             {
                 throw new InvalidOperationException("Insufficient Funds");
             }
 
             //handle current account
-            if (acc.ToString() == "Current" && Balance - amount < 1000)
+            if (this.AccType.ToString() == "Current" && Balance - amount < 1000)
             {
                 throw new InvalidOperationException("Insufficient Funds");
             }
 
             //Make withdrawal
-            var drawn = new Transaction(accNo, -amount, note, acc.ToString(), DateTime.Now);
+            var drawn = new Transaction(this.number, -amount, note, this.AccType.ToString(), DateTime.Now);
             //Add withdrawal to transactions 
             Bank.allTransactions.Add(drawn);
         }
+        #endregion
 
-        public void Transfer(string accNo, decimal amount, string note, typeOfAcc acc)
+        #region Transfer Method
+        public void Transfer(string accNo, decimal amount, string note)
         {
             //variable that tracks if recipient acc. No. exists
             bool found = false;
@@ -118,15 +124,15 @@ namespace Seun_s_Bank.Lib
             //for case of an invalid recipient
             if (!found)
             {
-                throw new InvalidOperationException("Insufficient Funds");
+                throw new InvalidOperationException($"{accNo} was not found");
             } else
             //for valid recipient
             {
-                this.Withdraw(this.number, -amount, $"transfer to {accNo}", this.AccType);
-                recipient.Deposit(recipient.number, amount,  $"transfer from {this.number}", recipient.AccType);
+                this.Withdraw(amount, $"transfer to {accNo}");
+                recipient.Deposit(amount,  $"transfer from {this.number}");
             }
         }
-
+        #endregion
 
         private int _numberOfAccounts()
         {
